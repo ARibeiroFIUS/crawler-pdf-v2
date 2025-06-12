@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Crawler PDF V2.0 - Sistema Avançado para QGC</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            min-height: 100vh; 
+            color: #333;
+        }
+        
+        .container { 
+            max-width: 1000px; 
+            margin: 0 auto; 
+            padding: 20px; 
+        }
+        
+        .header { 
+            text-align: center; 
+            color: white; 
+            margin-bottom: 30px; 
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header .version {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .card { 
+            background: white; 
+            border-radius: 15px; 
+            padding: 30px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+            margin-bottom: 20px; 
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .feature-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+        
+        .feature-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .form-group { 
+            margin-bottom: 25px; 
+        }
+        
+        label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-weight: 600; 
+            color: #333; 
+        }
+        
+        input[type="file"] { 
+            width: 100%; 
+            padding: 15px; 
+            border: 2px dashed #ddd; 
+            border-radius: 10px; 
+            background: #f9f9f9; 
+            transition: all 0.3s;
+        }
+        
+        input[type="file"]:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .tolerance-group { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+        }
+        
+        .tolerance-slider { 
+            flex: 1; 
+            height: 8px;
+            border-radius: 4px;
+            background: #ddd;
+            outline: none;
+        }
+        
+        .tolerance-value { 
+            font-weight: bold; 
+            color: #667eea; 
+            min-width: 50px;
+            background: #f0f4ff;
+            padding: 5px 10px;
+            border-radius: 15px;
+        }
+        
+        .button-group { 
+            display: flex; 
+            gap: 15px; 
+            align-items: center; 
+            flex-wrap: wrap;
+        }
+        
+        .btn { 
+            padding: 15px 30px; 
+            border: none; 
+            border-radius: 10px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary { 
+            background: linear-gradient(135deg, #667eea, #764ba2); 
+            color: white; 
+        }
+        
+        .btn-primary:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-cancel { 
+            background: linear-gradient(135deg, #dc3545, #c82333); 
+            color: white; 
+        }
+        
+        .btn-cancel:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+        }
+        
+        .btn:disabled { 
+            opacity: 0.6; 
+            cursor: not-allowed; 
+            transform: none !important;
+        }
+        
+        .progress-section { 
+            display: none; 
+        }
+        
+        .progress-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        
+        .progress-bar { 
+            width: 100%; 
+            height: 25px; 
+            background: #e9ecef; 
+            border-radius: 15px; 
+            overflow: hidden; 
+            position: relative;
+        }
+        
+        .progress-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, #667eea, #764ba2); 
+            transition: width 0.5s ease; 
+            border-radius: 15px;
+        }
+        
+        .progress-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            line-height: 25px;
+            font-weight: bold;
+            color: #333;
+            font-size: 12px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid transparent;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+        
+        .results-section { 
+            display: none; 
+        }
+        
+        .download-btn { 
+            background: linear-gradient(135deg, #28a745, #20c997); 
+            color: white; 
+        }
+        
+        .download-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
+        
+        .document-analysis {
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .analysis-title {
+            color: #1976d2;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .analysis-item {
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Crawler PDF V2.0</h1>
+            <p>Sistema Avançado para Quadro Geral de Credores</p>
+            <div class="version">✨ Versão 2.0 - Inteligência Artificial</div>
+        </div>
+
+        <!-- Features -->
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>IA Integrada</h3>
+                <p>Detecção automática de QGC e extração inteligente de dados</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Cache Inteligente</h3>
+                <p>PDFs processados são armazenados para reuso instantâneo</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <h3>Extração de Valores</h3>
+                <p>Identifica valores monetários e CNPJs automaticamente</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Análise Completa</h3>
+                <p>Relatórios detalhados com estatísticas e metadados</p>
+            </div>
+        </div>
+
+        <!-- Upload Form -->
+        <div class="card">
+            <h2>📁 Upload de Arquivos</h2>
+            <form id="crawlerForm" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="excelFile">📊 Arquivo Excel com clientes:</label>
+                    <input type="file" id="excelFile" name="excelFile" accept=".xlsx,.xls" required>
+                    <small>Formatos suportados: Excel (.xlsx, .xls)</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="pdfFile">📄 Arquivo PDF para busca (QGC, Editais, etc.):</label>
+                    <input type="file" id="pdfFile" name="pdfFile" accept=".pdf" required>
+                    <small>O sistema detectará automaticamente o tipo de documento</small>
+                </div>
+
+                <div class="form-group">
+                    <label>🎯 Tolerância de Similaridade:</label>
+                    <div class="tolerance-group">
+                        <input type="range" id="tolerance" name="tolerance" min="50" max="100" value="80" class="tolerance-slider">
+                        <span id="toleranceValue" class="tolerance-value">80%</span>
+                    </div>
+                    <small>Valores maiores = busca mais rigorosa</small>
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" id="processBtn" class="btn btn-primary">
+                        🚀 Processar com IA
+                    </button>
+                    <button type="button" id="cancelBtn" class="btn btn-cancel" style="display: none;">
+                        ⏹️ Cancelar Processamento
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="card progress-section" id="progressSection">
+            <h3>⏳ Processamento Inteligente</h3>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                    <div class="progress-text" id="progressText">0%</div>
+                </div>
+                <p id="statusMessage">Iniciando processamento...</p>
+            </div>
+
+            <div id="documentAnalysis" class="document-analysis" style="display: none;">
+                <div class="analysis-title">🔍 Análise do Documento</div>
+                <div id="analysisContent"></div>
+            </div>
+
+            <div class="stats-grid" id="liveStats" style="display: none;">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalClients">-</div>
+                    <div class="stat-label">Total de Clientes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="processedClients">-</div>
+                    <div class="stat-label">Processados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="foundClients">-</div>
+                    <div class="stat-label">Encontrados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="successRate">-</div>
+                    <div class="stat-label">Taxa de Sucesso</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="card results-section" id="resultsSection">
+            <h3>📊 Resultados Finais</h3>
+            
+            <div id="finalAnalysis" class="document-analysis"></div>
+            
+            <div class="stats-grid" id="finalStats"></div>
+            
+            <div class="button-group">
+                <button class="btn download-btn" id="downloadBtn">
+                    💾 Baixar Resultados Completos
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Elementos DOM
+        const form = document.getElementById('crawlerForm');
+        const processBtn = document.getElementById('processBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const progressSection = document.getElementById('progressSection');
+        const resultsSection = document.getElementById('resultsSection');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const statusMessage = document.getElementById('statusMessage');
+        const toleranceSlider = document.getElementById('tolerance');
+        const toleranceValue = document.getElementById('toleranceValue');
+        
+        let currentResultFile = null;
+        let processingInterval = null;
+        
+        // Event Listeners
+        toleranceSlider.addEventListener('input', function() {
+            toleranceValue.textContent = this.value + '%';
+        });
+        
+        cancelBtn.addEventListener('click', async function() {
+            try {
+                const response = await fetch('/cancel', { method: 'POST' });
+                if (response.ok) {
+                    progressSection.style.display = 'none';
+                    resetUI();
+                    alert('✅ Processamento cancelado com sucesso!');
+                }
+            } catch (error) {
+                alert('❌ Erro ao cancelar: ' + error.message);
+            }
+        });
+        
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(form);
+            
+            // UI de início
+            progressSection.style.display = 'block';
+            resultsSection.style.display = 'none';
+            processBtn.disabled = true;
+            cancelBtn.style.display = 'inline-flex';
+            
+            try {
+                const response = await fetch('/process_v2', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    monitorProgress();
+                } else {
+                    throw new Error('Erro no servidor');
+                }
+                
+            } catch (error) {
+                alert('❌ Erro: ' + error.message);
+                resetUI();
+            }
+        });
+        
+        async function monitorProgress() {
+            try {
+                const response = await fetch('/progress_v2');
+                const data = await response.json();
+                
+                // Atualizar barra de progresso
+                progressFill.style.width = data.progress + '%';
+                progressText.textContent = data.progress + '%';
+                statusMessage.textContent = data.status;
+                
+                // Mostrar análise do documento se disponível
+                if (data.document_analysis) {
+                    showDocumentAnalysis(data.document_analysis);
+                }
+                
+                // Atualizar estatísticas em tempo real
+                if (data.stats) {
+                    updateLiveStats(data.stats);
+                }
+                
+                if (data.processing) {
+                    setTimeout(monitorProgress, 1000);
+                } else if (data.results) {
+                    showFinalResults(data.results);
+                } else if (data.status && data.status.includes('cancelado')) {
+                    progressSection.style.display = 'none';
+                    resetUI();
+                } else {
+                    alert('❌ Erro durante processamento');
+                    resetUI();
+                }
+                
+            } catch (error) {
+                console.error('Erro:', error);
+                setTimeout(monitorProgress, 2000);
+            }
+        }
+        
+        function showDocumentAnalysis(analysis) {
+            const analysisDiv = document.getElementById('documentAnalysis');
+            const content = document.getElementById('analysisContent');
+            
+            content.innerHTML = `
+                <div class="analysis-item">📄 <strong>Tipo:</strong> ${analysis.type}</div>
+                <div class="analysis-item">🎯 <strong>Confiança:</strong> ${analysis.confidence}%</div>
+                <div class="analysis-item">💰 <strong>Valores encontrados:</strong> ${analysis.values_found}</div>
+                <div class="analysis-item">🏢 <strong>CNPJs encontrados:</strong> ${analysis.cnpjs_found}</div>
+            `;
+            
+            analysisDiv.style.display = 'block';
+        }
+        
+        function updateLiveStats(stats) {
+            document.getElementById('totalClients').textContent = stats.total_clients || '-';
+            document.getElementById('processedClients').textContent = 
+                stats.processed_clients || stats.found_clients || '-';
+            document.getElementById('foundClients').textContent = stats.found_clients || '-';
+            
+            if (stats.total_clients && stats.found_clients) {
+                const rate = ((stats.found_clients / stats.total_clients) * 100).toFixed(1);
+                document.getElementById('successRate').textContent = rate + '%';
+            }
+            
+            document.getElementById('liveStats').style.display = 'grid';
+        }
+        
+        function showFinalResults(results) {
+            progressSection.style.display = 'none';
+            resultsSection.style.display = 'block';
+            
+            // Análise final
+            if (results.document_analysis) {
+                const finalAnalysis = document.getElementById('finalAnalysis');
+                finalAnalysis.innerHTML = `
+                    <div class="analysis-title">📋 Análise Completa do Documento</div>
+                    <div class="analysis-item">📄 <strong>Tipo identificado:</strong> ${results.document_analysis.type}</div>
+                    <div class="analysis-item">🎯 <strong>Precisão da detecção:</strong> ${results.document_analysis.confidence}%</div>
+                    <div class="analysis-item">⏱️ <strong>Tempo de processamento:</strong> ${results.processing_time}s</div>
+                `;
+            }
+            
+            // Estatísticas finais
+            const finalStats = document.getElementById('finalStats');
+            finalStats.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${results.total}</div>
+                    <div class="stat-label">Total de Clientes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${results.found}</div>
+                    <div class="stat-label">Encontrados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${((results.found / results.total) * 100).toFixed(1)}%</div>
+                    <div class="stat-label">Taxa de Sucesso</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${results.processing_time}s</div>
+                    <div class="stat-label">Tempo Total</div>
+                </div>
+            `;
+            
+            currentResultFile = results.file;
+            resetUI();
+        }
+        
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            if (currentResultFile) {
+                window.open('/download/' + encodeURIComponent(currentResultFile));
+            }
+        });
+        
+        function resetUI() {
+            processBtn.disabled = false;
+            cancelBtn.style.display = 'none';
+        }
+    </script>
+</body>
+</html> 
